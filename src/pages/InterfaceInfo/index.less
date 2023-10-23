@@ -1,0 +1,27 @@
+.text-ellipsis {
+  max-width: 150px; /* 设置宽度，根据需要调整 */
+  overflow: hidden;
+  white-space: nowrap; /* 防止文字换行 */
+  text-overflow: ellipsis; /* 使用省略号替代超出部分 */
+}
+.highlightLine:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 16px;
+  background: #00aeff;
+  border-radius: 2px;
+  content: '';
+}
+
+.highlightLine {
+  position: relative;
+  height: 16px;
+  margin-bottom: 18px;
+  padding-left: 14px;
+  color: #555;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+}
