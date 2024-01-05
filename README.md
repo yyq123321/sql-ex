@@ -1,4 +1,4 @@
-# API 接口开放平台
+# 数据库实验前端
 
 the front-end of Southeast University Secondary Market is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
@@ -57,7 +57,7 @@ npm test
 ### RUN(建议 dev 启动)
 
 ```bash
-npm start
+npm start dev
 ```
 
 ## More
