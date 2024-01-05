@@ -24,90 +24,17 @@ export default defineConfig({
   },
   // umi routes: https://umijs.org/docs/routing
   routes: [
+    {path: '/', name: '欢迎', icon: 'smile', component: './Welcome', hideInMenu: true},
+
     {
-      name: '主页',
-      icon: 'home',
-      path: '/homePage',
-      component: './HomePage',
-    },
-    {
-      path: '/admin',
-      name: '管理员',
-      icon: 'crown',
-      access: 'canAdmin',
-      routes: [
-        {
-          icon: 'table',
-          name: '接口管理',
-          path: '/admin/interface_info',
-          component: './admin/InterfaceInfo',
-        },
-        {
-          icon: 'table',
-          name: '接口分析',
-          path: '/admin/interface_analysis',
-          component: './admin/InterfaceAnalysis',
-        },
-        {
-          icon: 'table',
-          name: '用户管理',
-          path: '/admin/listUser',
-          component: './admin/ListUser',
-        },
-      ],
-    },
-    {
-      path: '/index',
-      name: '接口',
-      icon: 'smile',
-      component: './Index',
-    },
-    {
-      path: '/order/list',
-      name: '我的订单',
-      icon: 'ProfileOutlined',
-      component: './order/OrderList',
-    },
-    {
-      path: '/recharge',
-      name: '充值',
-      icon: 'PayCircleOutlined',
-      component: './Recharge',
-    },
-    {
-      path: '/interface_info/:id',
-      name: '查看接口',
-      icon: 'smile',
-      component: './InterfaceInfo',
-      hideInMenu: true,
-    },
-    {
-      path: '/user',
+      path: '/customer',
       layout: false,
       routes: [
         {
-          path: '/user/login',
+          path: '/customer/login',
           layout: false,
           name: 'login',
-          component: './user/Login',
-        },
-        {
-          name: 'register-result',
-          icon: 'smile',
-          path: '/user/register-result',
-          component: './user/register-result',
-        },
-        {
-          name: 'register',
-          icon: 'smile',
-          path: '/user/register',
-          component: './user/register',
-        },
-        {
-          name: 'loginUseCode',
-          icon: 'smile',
-          path: '/user/loginUseCode',
-          component: './user/LoginUseCode',
+          component: './customer/Login',
         },
         {
           component: '404',
@@ -115,11 +42,79 @@ export default defineConfig({
       ],
     },
     {
-      path: '/order/pay/:id',
-      icon: 'PayCircleOutlined',
-      name: '订单支付',
-      component: './order/PayOrder',
-      hideInMenu: true,
+      path: '/riders',
+      layout: false,
+      routes: [
+        {
+          path: '/riders/login',
+          layout: false,
+          name: 'login',
+          component: './riders/Login',
+        },
+        {
+          component: '404',
+        },
+      ],
+    },
+    // {
+    //   path: '/business',
+    //   routes: [
+    //
+    //   ],
+    // },
+    {
+      path: '/business/login',
+      layout: false,
+      name: 'login',
+      component: './business/Login',
+    },
+    {
+      path: '/showSQL',
+      icon: 'ProfileOutlined',
+      name: '复杂SQL可视化(后面几个页面是业务流程)',
+      component: './ShowSQL',
+    },
+    {
+      path: '/business/bizList',
+      icon: 'ProfileOutlined',
+      name: '商户列表',
+      component: './business/BizList',
+    },
+    {
+      path: '/business/info/:id',
+      name: '商户详情',
+      component: './business/Business',
+      hideInMenu: true
+    },
+    {
+      path: '/food/info/:id',
+      name: '菜品详情',
+      component: './food/FoodInfo',
+      hideInMenu: true
+    },
+    {
+      path: '/order/BizOrder',
+      icon: 'ProfileOutlined',
+      name: '商户订单',
+      component: './order/BizOrder',
+    },
+    {
+      path: '/order/CusOrder',
+      icon: 'ProfileOutlined',
+      name: '顾客订单',
+      component: './order/CusOrder',
+    },
+    {
+      path: '/order/RiderOrder',
+      icon: 'ProfileOutlined',
+      name: '骑手订单',
+      component: './order/RiderOrder',
+    },
+    {
+      path: '/order/NoRiderOrder',
+      icon: 'ProfileOutlined',
+      name: '没有骑手接单的订单',
+      component: './order/NoRiderOrder',
     },
     {
       path: '/order/info/:id',
@@ -128,6 +123,9 @@ export default defineConfig({
       component: './order/OrderInfo',
       hideInMenu: true,
     },
+    {
+
+    }
   ],
   access: {},
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
@@ -144,7 +142,7 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: {
     '/api/': {
-      target: 'http://localhost:8091',
+      target: 'http://localhost:8081',
       changeOrigin: true,
     },
   },

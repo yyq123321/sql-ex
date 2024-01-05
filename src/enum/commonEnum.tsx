@@ -32,10 +32,13 @@ export const productTypeColorEnum: any = {
 };
 
 export const orderStatusEnum: any = {
-  SUCCESS: '支付成功',
-  NOTPAY: '未支付',
-  CLOSED: '已取消',
+  MERCHANTACCEPTED: '商家已接单',
+  COURIERACCEPTED: '骑手已接单',
+  MERCHANTPREPARED: '商家已出餐',
+  COURIERPICKEDUP: '骑手已取餐',
+  DELIVERED: '外卖已送达',
 };
+
 
 export const orderPayTypeEnum: any = {
   WX: 'blue',

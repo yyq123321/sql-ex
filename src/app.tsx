@@ -1,18 +1,18 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
-import { SettingDrawer } from '@ant-design/pro-layout';
-import { PageLoading } from '@ant-design/pro-layout';
-import type { RunTimeLayoutConfig } from 'umi';
-import { history } from 'umi';
+import type {Settings as LayoutSettings} from '@ant-design/pro-layout';
+import {SettingDrawer} from '@ant-design/pro-layout';
+import {PageLoading} from '@ant-design/pro-layout';
+import type {RunTimeLayoutConfig} from 'umi';
+import {history} from 'umi';
 import defaultSettings from '../config/defaultSettings';
-import { getLoginUserUsingGET } from '@/services/ant-design-pro/userController';
-import { RequestConfig } from '@@/plugin-request/request';
-import { RightContent } from './components/RightContent';
+import {RequestConfig} from '@@/plugin-request/request';
+import {RightContent} from './components/RightContent';
 import NoFoundPage from '@/pages/404';
+import Footer from "@/components/Footer";
+import {getLoginUserUsingGET} from "@/services/ant-design-pro/businessesController";
 
 export const request: RequestConfig = {
-  prefix: 'yyq-api.yyq-personal-code.cn:8091', // 指定API后端服务器地址
   credentials: 'include', // 允许跨域携带cookie
-  // prefix: 'http://192.168.61.222:8081',
+  // prefix: 'http://localhost:8081',
   errorConfig: {
     adaptor: (resData) => {
       return {
@@ -25,14 +25,15 @@ export const request: RequestConfig = {
 };
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+const loginPath = '/customer/login';
 const loginCodePath = '/user/loginUseCode';
 const registerPath = '/user/register';
 const adminPath = '/admin/login';
+const homePagePath = '/';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
-  loading: <PageLoading />,
+  loading: <PageLoading/>,
 };
 
 /**
@@ -41,8 +42,9 @@ export const initialStateConfig = {
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.UserVO;
-  token?: string;
-  unReadMsg?: number;
+  businessId?: number;
+  customerId?: number;
+  riderId?: number;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.UserVO | undefined>;
 }> {
@@ -60,7 +62,8 @@ export async function getInitialState(): Promise<{
     history.location.pathname !== loginPath &&
     history.location.pathname !== loginCodePath &&
     history.location.pathname !== registerPath &&
-    history.location.pathname !== adminPath
+    history.location.pathname !== adminPath &&
+    history.location.pathname !== homePagePath
   ) {
     const currentUser = fetchUserInfo();
     return {
@@ -76,25 +79,29 @@ export async function getInitialState(): Promise<{
 }
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
-export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
+export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
   return {
-    rightContentRender: () => <RightContent />,
+    rightContentRender: () => <RightContent/>,
+    footerRender: () => <>
+      <Footer/>
+    </>,
     onPageChange: () => {
-      const { location } = history;
+      const {location} = history;
       // if (!whiteList.includes(location.pathname)) {
       //   getInitialState();
       // }
       // 如果没有登录，重定向到 login
-      if (
-        !initialState?.currentUser &&
-        !/^\/\w+\/?$/.test(location.pathname) &&
-        location.pathname !== '/homePage'
-      ) {
-        history.push(loginPath);
-      }
+      // if (
+      //   !initialState?.currentUser &&
+      //   !/^\/\w+\/?$/.test(location.pathname) &&
+      //   location.pathname !== '/' &&
+      //   location.pathname !== registerPath
+      // ) {
+      //   history.push(loginPath);
+      // }
     },
     // 自定义 403 页面
-    unAccessible: <NoFoundPage />,
+    unAccessible: <NoFoundPage/>,
     // 增加一个 loading 的状态
     childrenRender: (children) => {
       // if (initialState?.loading) return <PageLoading/>;

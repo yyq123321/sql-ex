@@ -51,7 +51,7 @@ const Login: React.FC = () => {
         const { redirect } = query as {
           redirect: string;
         };
-        history.push('/homePage' || redirect);
+        history.push('/' || redirect);
         // window.location.href = '/';
         return;
       }
@@ -72,8 +72,8 @@ const Login: React.FC = () => {
           <div className={styles.content}>
             <LoginForm
               logo={<img alt="logo" src="/logo.ico" />}
-              title="YYQ-API接口"
-              subTitle="个性化API接口调用"
+              title="BI平台"
+              subTitle="智能BI分析"
               onFinish={async (values) => {
                 await handleSubmit(values as API.UserLoginRequest);
               }}

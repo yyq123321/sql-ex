@@ -1,11 +1,12 @@
-import { history, useParams } from 'umi';
-import React, { useEffect, useState } from 'react';
-import { Badge, Button, Card, Descriptions, message, Popconfirm, Spin, Tag, Tooltip } from 'antd';
+import {useParams} from 'umi';
+import React, {useEffect, useState} from 'react';
+import {Badge, Button, Card, Descriptions, message, Popconfirm, Spin, Tag, Tooltip} from 'antd';
 
-import { orderPayTypeEnum, orderStatusEnum } from '@/enum/commonEnum';
+import {orderPayTypeEnum, orderStatusEnum} from '@/enum/commonEnum';
 import ProCard from '@ant-design/pro-card';
 import wechat from '../../../../public/assets/WeChat.jpg';
-import { cancelOrderUsingPOST, getOrderUsingGET } from '@/services/ant-design-pro/orderController';
+import {getOrderByIdUsingGET, updateOrderUsingPOST} from "@/services/ant-design-pro/ordersController";
+import {useModel} from "@@/plugin-model/useModel";
 
 const formatDate = (dateString: any) => {
   const date = new Date(dateString);
@@ -23,8 +24,9 @@ interface RouteParams {
 }
 
 export default () => {
-  const [data, setData] = useState<API.OrderVO>();
+  const [data, setData] = useState<API.OrdersVO>();
   const [loading, setLoading] = useState<boolean>(false);
+  const { initialState, setInitialState } = useModel('@@initialState');
 
   const params = useParams<RouteParams>();
   const loadData = async () => {
@@ -33,7 +35,7 @@ export default () => {
       return;
     }
     setLoading(true);
-    const res = await getOrderUsingGET({ orderSn: params.id });
+    const res = await getOrderByIdUsingGET({id: Number(params.id)});
     if (res.data && res.code === 0) {
       setData(res.data);
 
@@ -45,210 +47,126 @@ export default () => {
   useEffect(() => {
     loadData();
   }, []);
-  /**
-   *  Delete node
-   * @zh-CN 正在取消订单
-   *
-   * @param record
-   */
-  const handleClosed = async (record?: API.OrderVO) => {
-    const hide = message.loading('正在取消订单');
-    if (!record) return true;
-    try {
-      const res = await cancelOrderUsingPOST({
-        orderSn: record.orderNumber,
-      });
-      hide();
-      if (res.data) {
-        message.success('取消订单成功');
-        setTimeout(() => {
-          location.href = '/order/list';
-        }, 800);
-      }
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error('取消订单失败', error.message);
-      return false;
-    }
-  };
-  /**
-   *  Delete node
-   * @zh-CN 正在取消订单
-   *
-   * @param record
-   */
-  const handleDelete = async (record?: API.OrderVO) => {
-    const hide = message.loading('正在删除订单');
-    if (!record) return true;
-    try {
-      const res = await cancelOrderUsingPOST({
-        orderSn: record.orderNumber,
-      });
-      hide();
-      if (res.data) {
-        message.success('删除订单成功');
-        setTimeout(() => {
-          location.href = '/order/list';
-        }, 800);
-      }
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error('删除订单失败', error.message);
-      return false;
-    }
-  };
 
-  const deleteConfirm = async () => {
-    await handleDelete(data);
-  };
-  const closedConfirm = async () => {
-    await handleClosed(data);
-  };
-  const toPay = (record: API.OrderVO) => {
-    // if (record.payType === "WX") {
-    //   if (!record.codeUrl) {
-    //     message.error("订单获取失败")
-    //     return
-    //   }
-    //   // 判断是否为手机设备
-    //   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    //   if (isMobile) {
-    //     window.location.href = record.codeUrl
-    //   } else {
-    //     message.loading("正在前往收银台,请稍后.....", 0.6)
-    //     setTimeout(() => {
-    //       history.push(`/order/pay/${record.productId}?codeUrl=${record?.codeUrl?.trim()}}`)
-    //     }, 800)
-    //   }
-    // } else {
-    message.loading('正在前往收银台,请稍后....');
-    setTimeout(() => {
-      if (!record.formData) {
-        message.error('订单获取失败');
-        return;
-      }
-      document.write(record.formData);
-      setLoading(false);
-    }, 2000);
-    // }
-  };
   return (
     <Spin spinning={loading}>
       <Card
         title={'订单信息'}
         extra={
-          data?.status !== 0 && (
-            <Popconfirm
-              key={'Delete'}
-              title="请确认是否删除该订单!"
-              onConfirm={deleteConfirm}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button
-                key="SUCCESS"
-                danger
-                style={{ color: 'red' }}
-                onClick={() => {
-                  handleDelete(data);
-                }}
-              >
-                删除订单
+          <>
+            {((data?.status === 0 || !data?.rider?.id) && initialState?.riderId) && (
+              <Button type="primary" onClick={() => {
+                updateOrderUsingPOST({
+                  riderId: initialState?.riderId,
+                  status: data?.status === 2 ? 2 : 1,
+                  id: data?.id
+                });
+                message.success('骑手接单成功');
+              }}>
+                骑手接单
               </Button>
-            </Popconfirm>
-          )
+            )}
+
+            {(data?.status < 2 && initialState?.businessId) && (
+              <Button type="primary" onClick={() => {
+                updateOrderUsingPOST({
+                  status: 2,
+                  id: data?.id
+                });
+                message.success('商家出餐成功');
+              }}>
+                商家出餐
+              </Button>
+            )}
+
+            {(data?.status === 2 && data?.rider?.id && initialState?.riderId) && (
+              <Button type="primary" onClick={() => {
+                updateOrderUsingPOST({
+                  status: 3,
+                  id: data?.id
+                });
+                message.success('骑手取餐成功');
+              }}>
+                骑手取餐
+              </Button>
+            )}
+
+            {(data?.status === 3 && initialState?.riderId) && (
+              <Button type="primary" onClick={() => {
+                updateOrderUsingPOST({
+                  status: 4,
+                  id: data?.id
+                });
+                message.success('骑手送达外卖成功');
+              }}>
+                骑手送达外卖
+              </Button>
+            )}
+          </>
         }
+
       >
         <Descriptions>
-          <Descriptions.Item key={'orderName'} label={'订单名称'}>
-            {data?.productInfo?.name}
+          <Descriptions.Item key={'orderNum'} label={'订单号'}>
+            {data?.orderNum}
           </Descriptions.Item>
-          <Descriptions.Item key={'total'} label="订单金额 (元)">
-            {data?.totalAmount}
+          <Descriptions.Item key={'price'} label="订单金额 (元)">
+            {data?.price}
           </Descriptions.Item>
-          <Descriptions.Item key={'addPoints'} label="增加虚拟货币数量 (个)">
-            {data?.addCoins}
-          </Descriptions.Item>
-          <Descriptions.Item key={'payType'} label="支付类型">
-            <Tag color={orderPayTypeEnum['default']}>支付宝</Tag>
+          <Descriptions.Item key={'addPoints'} label="菜品">
+            {data?.food?.name}
           </Descriptions.Item>
           <Descriptions.Item key={'status'} label="订单状态">
+            {data && data.status === 0 ? (
+              <Badge status="processing" text="商家已接单"/>
+            ) : null}
             {data && data.status === 1 ? (
-              <Badge status="success" text={orderStatusEnum[data.status]} />
+              <Badge status="processing" text="骑手已接单"/>
             ) : null}
             {data && data.status === 2 ? (
-              <Badge status="default" text={orderStatusEnum[data.status]} />
+              <Badge status="processing" text="商家已出餐"/>
             ) : null}
-            {data && data.status === 0 ? (
-              <Badge status="error" text={orderStatusEnum[data.status]} />
+            {data && data.status === 3 ? (
+              <Badge status="processing" text="骑手已取餐"/>
+            ) : null}
+            {data && data.status === 4 ? (
+              <Badge status="success" text="外卖已送达"/>
             ) : null}
           </Descriptions.Item>
-          <Descriptions.Item key={'expirationTime'} label="过期时间">
-            {formatDate(data?.expirationTime)}
+
+          <Descriptions.Item key={'customerName'} label="顾客名">
+            {data?.customer?.name}
           </Descriptions.Item>
-          <Descriptions.Item key={'createTime'} label="创建时间">
-            {formatDate(data?.createTime)}
+          <Descriptions.Item key={'customerPhone'} label="顾客联系方式">
+            {data?.customer?.phone}
           </Descriptions.Item>
-          <Descriptions.Item key={'description'} label="商品描述">
-            {data?.productInfo?.description}
+
+          <Descriptions.Item key={'phone'} label="收货人电话">
+            {data?.address?.phone}
           </Descriptions.Item>
-          <Descriptions.Item key={'orderNo'} label="订单号">
-            {data?.orderNumber}
+          <Descriptions.Item key={'address'} label="收货地址">
+            {data?.address?.detail}
           </Descriptions.Item>
+          <Descriptions.Item key={'consignee'} label="收货人">
+            {data?.address?.consignee}
+          </Descriptions.Item>
+
+          <Descriptions.Item key={'riderPhone'} label="骑手">
+            {data?.rider ? data?.rider?.name: '暂无骑手'}
+          </Descriptions.Item>
+          <Descriptions.Item key={'riderPhone'} label="骑手电话">
+            {data?.rider ? data?.rider?.phone : '暂无相关信息'}
+          </Descriptions.Item>
+
+          <Descriptions.Item key={'customerName'} label="商户">
+            {data?.business?.name}
+          </Descriptions.Item>
+          <Descriptions.Item key={'customerName'} label="商户联系电话">
+            {data?.business?.phone}
+          </Descriptions.Item>
+
         </Descriptions>
       </Card>
-      {data?.status === 0 && (
-        <>
-          <br />
-          <Card>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Button
-                style={{ marginRight: 10, marginLeft: 10, height: 40 }}
-                block
-                onClick={() => {
-                  toPay(data);
-                }}
-              >
-                前往支付
-              </Button>
-              <Popconfirm
-                key={'Closed'}
-                title="请确认是否取消该订单!"
-                onConfirm={closedConfirm}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button block style={{ height: 40 }}>
-                  取消订单
-                </Button>
-              </Popconfirm>
-            </div>
-          </Card>
-        </>
-      )}
-      <ProCard style={{ marginTop: 20 }} layout={'center'}>
-        <span>
-          {' '}
-          本商品为虚拟内容，购买后不支持<strong style={{ color: 'red' }}>退换</strong>
-          。确认支付表示您已阅读并接受
-          <a
-            target={'_blank'}
-            href={
-              'https://gitee.com/qimu6/statement/blob/master/%E6%9F%92%E6%9C%A8%E6%8E%A5%E5%8F%A3%E7%94%A8%E6%88%B7%E5%8D%8F%E8%AE%AE.md#%E6%9F%92%E6%9C%A8%E6%8E%A5%E5%8F%A3%E7%94%A8%E6%88%B7%E5%8D%8F%E8%AE%AE'
-            }
-            rel="noreferrer"
-          >
-            {' '}
-            用户协议{' '}
-          </a>
-          如付款成功后10分钟后未到账，请联系站长微信：
-          <Tooltip placement="bottom" title={<img src={wechat} alt="微信 code_nav" width="120" />}>
-            <a>aqimu66</a>
-          </Tooltip>
-        </span>
-      </ProCard>
     </Spin>
   );
 };

@@ -2,19 +2,17 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
-import * as analysisController from './analysisController';
-import * as basicErrorController from './basicErrorController';
-import * as interfaceInfoController from './interfaceInfoController';
-import * as productInfoController from './productInfoController';
-import * as userController from './userController';
-import * as userInterfaceInfoController from './userInterfaceInfoController';
-import * as orderController from './orderController';
+import * as addressController from './addressController';
+import * as businessesController from './businessesController';
+import * as customersController from './customersController';
+import * as foodsController from './foodsController';
+import * as ordersController from './ordersController';
+import * as ridersController from './ridersController';
 export default {
-  analysisController,
-  basicErrorController,
-  interfaceInfoController,
-  productInfoController,
-  userController,
-  userInterfaceInfoController,
-  orderController,
+  addressController,
+  businessesController,
+  customersController,
+  foodsController,
+  ordersController,
+  ridersController,
 };

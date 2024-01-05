@@ -12,7 +12,7 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'YYQ-API接口',
+  title: '数据库实验：外卖demo',
   pwa: false,
   logo: 'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=600',
 };

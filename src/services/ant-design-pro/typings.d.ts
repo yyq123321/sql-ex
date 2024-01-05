@@ -1,677 +1,366 @@
 declare namespace API {
-  type BaseResponseboolean = {
+  type Address = {
+    consignee?: string;
+    createTime?: string;
+    customerId?: number;
+    detail?: string;
+    id?: number;
+    phone?: string;
+    sex?: number;
+    updateTime?: string;
+  };
+
+  type AddressAddRequest = {
+    consignee?: string;
+    customerId?: number;
+    detail?: string;
+    phone?: string;
+    sex?: number;
+  };
+
+  type AddressUpdateRequest = {
+    consignee?: string;
+    customerId?: number;
+    detail?: string;
+    id?: number;
+    phone?: string;
+    sex?: number;
+  };
+
+  type AddressVO = {
+    consignee?: string;
+    customerId?: number;
+    detail?: string;
+    id?: number;
+    phone?: string;
+    sex?: number;
+  };
+
+  type BaseResponseAddress_ = {
     code?: number;
-    data?: boolean;
+    data?: Address;
     message?: string;
   };
 
-  type BaseResponseInterfaceInfo = {
+  type BaseResponseBusinessVO_ = {
     code?: number;
-    data?: InterfaceInfo;
+    data?: BusinessVO;
     message?: string;
   };
 
-  type BaseResponseListInterfaceInfo = {
+  type BaseResponseCustomerVO_ = {
     code?: number;
-    data?: InterfaceInfo[];
+    data?: CustomerVO;
     message?: string;
   };
 
-  type listInterfaceInfoBySearchTextPageUsingGETParams = {
-    current?: number;
-    pageSize?: number;
-    searchText?: string;
-    sortField?: string;
-    sortOrder?: string;
-  };
-
-  type BaseResponseListInterfaceInfoVO = {
+  type BaseResponseFoods_ = {
     code?: number;
-    data?: InterfaceInfoVO[];
+    data?: Foods;
     message?: string;
   };
 
-  type BaseResponseListProductInfo = {
-    code?: number;
-    data?: ProductInfo[];
-    message?: string;
-  };
-
-  type BaseResponseListUserInterfaceInfo = {
-    code?: number;
-    data?: UserInterfaceInfo[];
-    message?: string;
-  };
-
-  type BaseResponseListUserVO = {
-    code?: number;
-    data?: UserVO[];
-    message?: string;
-  };
-
-  type BaseResponseLoginUserVO = {
-    code?: number;
-    data?: LoginUserVO;
-    message?: string;
-  };
-
-  type BaseResponselong = {
+  type BaseResponseInt_ = {
     code?: number;
     data?: number;
     message?: string;
   };
 
-  type BaseResponseobject = {
+  type BaseResponseListAddressVO_ = {
     code?: number;
-    data?: Record<string, any>;
+    data?: ListAddressVO;
     message?: string;
   };
 
-  type BaseResponsePageInterfaceInfo = {
+  type BaseResponseListBusinessesVO_ = {
     code?: number;
-    data?: PageInterfaceInfo;
+    data?: ListBusinessesVO;
     message?: string;
   };
 
-  type BaseResponsePageProductInfo = {
+  type BaseResponseListBusinessFoodOrderDTO_ = {
     code?: number;
-    data?: PageProductInfo;
+    data?: BusinessFoodOrderDTO[];
     message?: string;
   };
 
-  type BaseResponsePageUserInterfaceInfo = {
+  type BaseResponseListFoodOrderSummaryDTO_ = {
     code?: number;
-    data?: PageUserInterfaceInfo;
+    data?: FoodOrderSummaryDTO[];
     message?: string;
   };
 
-  type BaseResponsePageUserVO = {
+  type BaseResponseListFoodsVO_ = {
     code?: number;
-    data?: PageUserVO;
+    data?: ListFoodsVO;
     message?: string;
   };
 
-  type BaseResponseProductInfo = {
+  type BaseResponseListOrderSummaryDTO_ = {
     code?: number;
-    data?: ProductInfo;
+    data?: OrderSummaryDTO[];
     message?: string;
   };
 
-  type BaseResponseUserInterfaceInfo = {
+  type BaseResponseListOrdersVO_ = {
     code?: number;
-    data?: UserInterfaceInfo;
+    data?: ListOrdersVO;
     message?: string;
   };
 
-  type BaseResponseUserVO = {
+  type BaseResponseLong_ = {
     code?: number;
-    data?: UserVO;
+    data?: number;
     message?: string;
   };
 
-  type DeleteRequest = {
-    id?: number;
+  type BaseResponseOrdersVO_ = {
+    code?: number;
+    data?: OrdersVO;
+    message?: string;
   };
 
-  type getInterfaceInfoByIdUsingGETParams = {
-    /** id */
-    id?: number;
+  type BaseResponseRiderVO_ = {
+    code?: number;
+    data?: RiderVO;
+    message?: string;
   };
 
-  type getProductInfoByIdUsingGETParams = {
-    /** id */
-    id?: number;
+  type BusinessFoodOrderDTO = {
+    businessId?: number;
+    businessName?: string;
+    foodName?: string;
+    totalOrders?: number;
   };
 
-  type getUserByIdUsingGETParams = {
-    /** id */
-    id?: number;
-  };
-
-  type getUserInterfaceInfoByIdUsingGETParams = {
-    /** id */
-    id?: number;
-  };
-
-  type IdRequest = {
-    id?: number;
-  };
-
-  type InterfaceInfo = {
-    createTime?: string;
-    description?: string;
-    id?: number;
-    isDelete?: number;
-    method?: string;
-    name?: string;
-    paramExample?: string;
-    price?: number;
-    requestHeader?: string;
-    requestParams?: string;
-    responseHeader?: string;
-    sdk?: string;
-    status?: number;
-    updateTime?: string;
-    url?: string;
-    userId?: number;
-    avatarUrl?: string;
-  };
-
-  type InterfaceInfoAddRequest = {
-    description?: string;
-    method?: string;
-    name?: string;
-    price?: number;
-    requestHeader?: string;
-    requestParams?: string;
-    responseHeader?: string;
-    paramExample?: string;
-    url?: string;
-  };
-
-  type InterfaceInfoUpdateRequest = {
-    description?: string;
-    id?: number;
-    method?: string;
-    name?: string;
-    price?: number;
-    requestHeader?: string;
-    requestParams?: string;
-    responseHeader?: string;
-    status?: number;
-    url?: string;
-  };
-
-  type InterfaceInfoVO = {
-    availablePieces?: string;
-    charging?: number;
-    chargingId?: number;
-    createTime?: string;
-    description?: string;
-    id?: number;
-    isDelete?: number;
-    method?: string;
-    name?: string;
-    paramExample?: string;
-    price?: number;
-    requestHeader?: string;
-    requestParams?: string;
-    responseHeader?: string;
-    sdk?: string;
-    status?: number;
-    totalNum?: number;
-    updateTime?: string;
-    url?: string;
-    userId?: number;
-  };
-
-  type InterfaceInvokeRequest = {
-    id?: number;
-    userRequestParams?: string;
-  };
-
-  type listInterfaceInfoByPageUsingGETParams = {
-    current?: number;
-    description?: string;
-    id?: number;
-    method?: string;
-    name?: string;
-    pageSize?: number;
-    price?: number;
-    requestHeader?: string;
-    requestParams?: string;
-    responseHeader?: string;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    url?: string;
-    userId?: number;
-  };
-
-  type listInterfaceInfoUsingGETParams = {
-    current?: number;
-    description?: string;
-    id?: number;
-    method?: string;
-    name?: string;
-    pageSize?: number;
-    price?: number;
-    requestHeader?: string;
-    requestParams?: string;
-    responseHeader?: string;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    url?: string;
-    userId?: number;
-  };
-
-  type listProductInfoByPageUsingGETParams = {
-    addCoins?: number;
-    current?: number;
-    description?: string;
-    name?: string;
-    pageSize?: number;
-    productType?: string;
-    sortField?: string;
-    sortOrder?: string;
-    total?: number;
-  };
-
-  type listProductInfoBySearchTextPageUsingGETParams = {
-    current?: number;
-    pageSize?: number;
-    searchText?: string;
-    sortField?: string;
-    sortOrder?: string;
-  };
-
-  type listProductInfoUsingGETParams = {
-    addCoins?: number;
-    current?: number;
-    description?: string;
-    name?: string;
-    pageSize?: number;
-    productType?: string;
-    sortField?: string;
-    sortOrder?: string;
-    total?: number;
-  };
-
-  type listUserByPageUsingGETParams = {
-    current?: number;
-    id?: number;
-    mpOpenId?: string;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    unionId?: string;
-    userName?: string;
-    userProfile?: string;
-    userRole?: string;
-  };
-
-  type listUserInterfaceInfoByPageUsingGETParams = {
-    current?: number;
-    id?: number;
-    interfaceInfoId?: number;
-    leftNum?: number;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    totalNum?: number;
-    userId?: number;
-  };
-
-  type listUserInterfaceInfoUsingGETParams = {
-    current?: number;
-    id?: number;
-    interfaceInfoId?: number;
-    leftNum?: number;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    totalNum?: number;
-    userId?: number;
-  };
-
-  type listUserUsingGETParams = {
-    current?: number;
-    id?: number;
-    mpOpenId?: string;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    unionId?: string;
-    userName?: string;
-    userProfile?: string;
-    userRole?: string;
-  };
-
-  type changeStatusParams = {
-    status?: number;
-    userId?: number;
-  };
-
-  type LoginUserVO = {
-    createTime?: string;
-    id?: number;
-    updateTime?: string;
-    userAvatar?: string;
-    userName?: string;
-    userProfile?: string;
-    userRole?: string;
-    status?: number;
+  type BusinessLoginRequest = {
+    password?: string;
     phone?: string;
   };
 
-  type ModelAndView = {
-    empty?: boolean;
-    model?: Record<string, any>;
-    modelMap?: Record<string, any>;
-    reference?: boolean;
-    status?:
-      | 'ACCEPTED'
-      | 'ALREADY_REPORTED'
-      | 'BAD_GATEWAY'
-      | 'BAD_REQUEST'
-      | 'BANDWIDTH_LIMIT_EXCEEDED'
-      | 'CHECKPOINT'
-      | 'CONFLICT'
-      | 'CONTINUE'
-      | 'CREATED'
-      | 'DESTINATION_LOCKED'
-      | 'EXPECTATION_FAILED'
-      | 'FAILED_DEPENDENCY'
-      | 'FORBIDDEN'
-      | 'FOUND'
-      | 'GATEWAY_TIMEOUT'
-      | 'GONE'
-      | 'HTTP_VERSION_NOT_SUPPORTED'
-      | 'IM_USED'
-      | 'INSUFFICIENT_SPACE_ON_RESOURCE'
-      | 'INSUFFICIENT_STORAGE'
-      | 'INTERNAL_SERVER_ERROR'
-      | 'I_AM_A_TEAPOT'
-      | 'LENGTH_REQUIRED'
-      | 'LOCKED'
-      | 'LOOP_DETECTED'
-      | 'METHOD_FAILURE'
-      | 'METHOD_NOT_ALLOWED'
-      | 'MOVED_PERMANENTLY'
-      | 'MOVED_TEMPORARILY'
-      | 'MULTIPLE_CHOICES'
-      | 'MULTI_STATUS'
-      | 'NETWORK_AUTHENTICATION_REQUIRED'
-      | 'NON_AUTHORITATIVE_INFORMATION'
-      | 'NOT_ACCEPTABLE'
-      | 'NOT_EXTENDED'
-      | 'NOT_FOUND'
-      | 'NOT_IMPLEMENTED'
-      | 'NOT_MODIFIED'
-      | 'NO_CONTENT'
-      | 'OK'
-      | 'PARTIAL_CONTENT'
-      | 'PAYLOAD_TOO_LARGE'
-      | 'PAYMENT_REQUIRED'
-      | 'PERMANENT_REDIRECT'
-      | 'PRECONDITION_FAILED'
-      | 'PRECONDITION_REQUIRED'
-      | 'PROCESSING'
-      | 'PROXY_AUTHENTICATION_REQUIRED'
-      | 'REQUESTED_RANGE_NOT_SATISFIABLE'
-      | 'REQUEST_ENTITY_TOO_LARGE'
-      | 'REQUEST_HEADER_FIELDS_TOO_LARGE'
-      | 'REQUEST_TIMEOUT'
-      | 'REQUEST_URI_TOO_LONG'
-      | 'RESET_CONTENT'
-      | 'SEE_OTHER'
-      | 'SERVICE_UNAVAILABLE'
-      | 'SWITCHING_PROTOCOLS'
-      | 'TEMPORARY_REDIRECT'
-      | 'TOO_EARLY'
-      | 'TOO_MANY_REQUESTS'
-      | 'UNAUTHORIZED'
-      | 'UNAVAILABLE_FOR_LEGAL_REASONS'
-      | 'UNPROCESSABLE_ENTITY'
-      | 'UNSUPPORTED_MEDIA_TYPE'
-      | 'UPGRADE_REQUIRED'
-      | 'URI_TOO_LONG'
-      | 'USE_PROXY'
-      | 'VARIANT_ALSO_NEGOTIATES';
-    view?: View;
-    viewName?: string;
-  };
-
-  type OrderItem = {
-    asc?: boolean;
-    column?: string;
-  };
-
-  type PageInterfaceInfo = {
-    countId?: string;
-    current?: number;
-    maxLimit?: number;
-    optimizeCountSql?: boolean;
-    orders?: OrderItem[];
-    pages?: number;
-    records?: InterfaceInfo[];
-    searchCount?: boolean;
-    size?: number;
-    total?: number;
-  };
-
-  type PageProductInfo = {
-    countId?: string;
-    current?: number;
-    maxLimit?: number;
-    optimizeCountSql?: boolean;
-    orders?: OrderItem[];
-    pages?: number;
-    records?: ProductInfo[];
-    searchCount?: boolean;
-    size?: number;
-    total?: number;
-  };
-
-  type PageUserInterfaceInfo = {
-    countId?: string;
-    current?: number;
-    maxLimit?: number;
-    optimizeCountSql?: boolean;
-    orders?: OrderItem[];
-    pages?: number;
-    records?: UserInterfaceInfo[];
-    searchCount?: boolean;
-    size?: number;
-    total?: number;
-  };
-
-  type PageUserVO = {
-    countId?: string;
-    current?: number;
-    maxLimit?: number;
-    optimizeCountSql?: boolean;
-    orders?: OrderItem[];
-    pages?: number;
-    records?: UserVO[];
-    searchCount?: boolean;
-    size?: number;
-    total?: number;
-  };
-
-  type ProductInfo = {
-    addCoins?: number;
-    createTime?: string;
-    description?: string;
-    expirationTime?: string;
-    id?: number;
-    isDelete?: number;
-    name?: string;
-    productType?: string;
-    status?: number;
-    total?: number;
-    updateTime?: string;
-    userId?: number;
-  };
-
-  type ProductInfoAddRequest = {
-    addCoins?: number;
-    description?: string;
-    expirationTime?: string;
-    name?: string;
-    productType?: string;
-    total?: number;
-  };
-
-  type ProductInfoUpdateRequest = {
-    addCoins?: number;
-    description?: string;
-    expirationTime?: string;
+  type BusinessVO = {
+    address?: string;
     id?: number;
     name?: string;
-    productType?: string;
-    total?: number;
+    phone?: string;
+    photo?: string;
   };
 
-  type UserAddRequest = {
-    userAccount?: string;
-    userAvatar?: string;
-    userName?: string;
-    userRole?: string;
-  };
-
-  type UserInterfaceInfo = {
-    createTime?: string;
-    id?: number;
-    interfaceInfoId?: number;
-    isDelete?: number;
-    leftNum?: number;
-    status?: number;
-    totalNum?: number;
-    updateTime?: string;
-    userId?: number;
-    version?: number;
-  };
-
-  type UserInterfaceInfoAddRequest = {
-    interfaceInfoId?: number;
-    leftNum?: number;
-    status?: number;
-    totalNum?: number;
-    userId?: number;
-  };
-
-  type UserInterfaceInfoUpdateRequest = {
-    id?: number;
-    leftNum?: number;
-    status?: number;
-    totalNum?: number;
-  };
-
-  type UserLoginRequest = {
-    userAccount?: string;
-    userPassword?: string;
-  };
-
-  type UserRegisterRequest = {
-    checkPassword?: string;
-    userAccount?: string;
-    userPassword?: string;
+  type CustomerLoginRequest = {
+    password?: string;
     phone?: string;
   };
 
-  type UserUpdateRequest = {
+  type CustomerVO = {
+    avatar?: string;
     id?: number;
-    userAvatar?: string;
-    userName?: string;
-    userProfile?: string;
-    userRole?: string;
-  };
-
-  type UserVO = {
-    createTime?: string;
-    id?: number;
-    userAvatar?: string;
-    userName?: string;
-    userProfile?: string;
-    userRole?: string;
-    balance?: number;
-    status?: number;
+    name?: string;
     phone?: string;
   };
 
-  type View = {
-    contentType?: string;
+  type deleteAddressByIdUsingDELETEParams = {
+    /** id */
+    id?: number;
   };
 
-  type BaseResponseBoolean_ = {
-    code?: number;
-    data?: boolean;
-    message?: string;
+  type FoodAddRequest = {
+    businessId?: number;
+    category?: number;
+    id?: number;
+    name?: string;
+    photo?: string;
+    price?: number;
   };
 
-  type BaseResponseOrderVO_ = {
-    code?: number;
-    data?: OrderVO;
-    message?: string;
+  type FoodOrderSummaryDTO = {
+    foodName?: string;
+    totalOrders?: number;
   };
 
-  type BaseResponsePageOrderVO_ = {
-    code?: number;
-    data?: PageOrderVO_;
-    message?: string;
+  type Foods = {
+    businessId?: number;
+    category?: number;
+    createTime?: string;
+    id?: number;
+    name?: string;
+    photo?: string;
+    price?: number;
+    updateTime?: string;
   };
 
-  type cancelOrderUsingPOSTParams = {
-    /** orderSn */
-    orderSn?: string;
+  type FoodsUpdateRequest = {
+    businessId?: number;
+    category?: number;
+    id?: number;
+    name?: string;
+    photo?: string;
+    price?: number;
   };
 
-  type getOrderUsingGETParams = {
-    /** orderSn */
-    orderSn?: string;
+  type FoodsVO = {
+    businessId?: number;
+    category?: number;
+    id?: number;
+    name?: string;
+    photo?: string;
+    price?: number;
   };
 
-  type listPageOrderUsingGETParams = {
+  type getAddressByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type getBizByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type getCusByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type getFoodsByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type getOrderByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type getRiderByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
+  type listAddressUsingGETParams = {
+    current?: number;
+    customerId?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type ListAddressVO = {
+    list?: Address[];
+    total?: number;
+  };
+
+  type listBizMyOrderUsingGETParams = {
+    businessId?: number;
     current?: number;
     pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type listBizUsingGETParams = {
+    current?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type ListBusinessesVO = {
+    list?: BusinessVO[];
+    total?: number;
+  };
+
+  type listCusMyOrderUsingGETParams = {
+    current?: number;
+    customerId?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type listFoodsUsingGETParams = {
+    businessId?: number;
+    current?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type ListFoodsVO = {
+    list?: Foods[];
+    total?: number;
+  };
+
+  type listNoRiderOrderUsingGETParams = {
+    current?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type ListOrdersVO = {
+    list?: OrdersVO[];
+    total?: number;
+  };
+
+  type listOrderUsingGETParams = {
+    current?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type listRiderMyOrderUsingGETParams = {
+    current?: number;
+    pageSize?: number;
+    riderId?: number;
     sortField?: string;
     sortOrder?: string;
   };
 
   type OrderCreateRequest = {
-    productId?: number;
-    userId?: number;
+    addressId?: number;
+    businessId?: number;
+    customerId?: number;
+    foodId?: number;
+    price?: number;
+    remark?: string;
+    riderId?: number;
   };
 
-  type OrderItem = {
-    asc?: boolean;
-    column?: string;
+  type OrderSummaryDTO = {
+    businessName?: string;
+    foodName?: string;
+    totalOrders?: number;
   };
 
-  type OrderVO = {
-    addCoins?: number;
-    codeUrl?: string;
-    createTime?: string;
-    expirationTime?: string;
-    formData?: string;
+  type OrdersUpdateRequest = {
     id?: number;
-    orderNumber?: string;
-    productId?: number;
-    productInfo?: ProductInfo;
+    riderId?: number;
     status?: number;
-    totalAmount?: number;
-    userId?: number;
   };
 
-  type PageOrderVO_ = {
-    countId?: string;
-    current?: number;
-    maxLimit?: number;
-    optimizeCountSql?: boolean;
-    orders?: OrderItem[];
-    pages?: number;
-    records?: OrderVO[];
-    searchCount?: boolean;
-    size?: number;
-    total?: number;
-  };
-
-  type ProductInfo = {
-    addCoins?: number;
-    createTime?: string;
-    description?: string;
-    expirationTime?: string;
+  type OrdersVO = {
+    address?: AddressVO;
+    business?: BusinessVO;
+    customer?: CustomerVO;
+    food?: FoodsVO;
     id?: number;
-    isDelete?: number;
+    orderNum?: string;
+    price?: number;
+    remark?: string;
+    rider?: RiderVO;
+    status?: number;
+  };
+
+  type RiderLoginRequest = {
+    password?: string;
+    phone?: string;
+  };
+
+  type RiderVO = {
+    avatar?: string;
+    id?: number;
     name?: string;
-    productType?: string;
-    status?: number;
-    total?: number;
-    updateTime?: string;
-    userId?: number;
+    phone?: string;
   };
 }

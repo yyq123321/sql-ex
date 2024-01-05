@@ -1,33 +1,30 @@
 import { ActionType, PageContainer } from '@ant-design/pro-components';
 import { useRef, useState } from 'react';
 
-import { Card, List, message, Popconfirm, Radio, Input, Avatar, Divider } from 'antd';
-import {
-  cancelOrderUsingPOST,
-  listPageOrderUsingGET,
-} from '@/services/ant-design-pro/orderController';
+import { Card, List, Radio, Input, Avatar, Divider } from 'antd';
 import { useRequest } from 'umi';
 import styles from './style.less';
 import ListContent from '@/pages/order/Columns/Columns';
 import { Link } from '@umijs/preset-dumi/lib/theme';
+import {listOrderUsingGET} from "@/services/ant-design-pro/ordersController";
 
 export default () => {
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.OrderVO>();
-  const [data, setData] = useState<API.OrderVO[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.OrdersVO>();
+  const [data, setData] = useState<API.OrdersVO[]>([]);
   const [pageSize, setPageSize] = useState<number>(8);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { loading } = useRequest(
     () => {
-      const result = listPageOrderUsingGET({ current: currentPage, pageSize: pageSize });
+      const result = listOrderUsingGET({ current: currentPage, pageSize: pageSize });
       return result;
     },
     {
       onSuccess: (result) => {
         setTotalNum(result?.total || 0);
-        setData(result?.records || []);
+        setData(result?.list || []);
       },
     },
   );
@@ -48,8 +45,8 @@ export default () => {
   );
 
   function changePage(_page: number, _pageSize: number) {
-    listPageOrderUsingGET({ current: _page, pageSize: _pageSize }).then((result) => {
-      setData(result.data.records || []);
+    listUsingGET2({ current: _page, pageSize: _pageSize }).then((result) => {
+      setData(result.data.list || []);
       setTotalNum(result.data.total || 0);
     });
     // setListData(result.courseVOList);
@@ -72,98 +69,13 @@ export default () => {
     pageSizeOptions: [8, 16, 24, 36],
   };
 
-  /**
-   *  Delete node
-   * @zh-CN 正在取消订单
-   *
-   * @param record
-   */
-  const handleClosed = async (record: API.OrderVO) => {
-    const hide = message.loading('正在取消订单');
-    if (!record) return true;
-    try {
-      const res = await cancelOrderUsingPOST({
-        orderSn: record.orderNumber,
-      });
-      hide();
-      if (res.data) {
-        message.success('取消订单成功');
-        actionRef.current?.reload();
-      }
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error('取消订单失败', error.message);
-      return false;
-    }
-  };
-  /**
-   *  Delete node
-   * @zh-CN 正在取消订单
-   *
-   * @param record
-   */
-  const handleDelete = async (record: API.OrderVO) => {
-    const hide = message.loading('正在删除订单');
-    if (!record) return true;
-    try {
-      const res = await cancelOrderUsingPOST({
-        orderSn: record.orderNumber,
-      });
-      hide();
-      if (res.data) {
-        message.success('删除订单成功');
-        actionRef.current?.reload();
-      }
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error('删除订单失败', error.message);
-      return false;
-    }
-  };
-
-  const toPay = (record: API.OrderVO) => {
-    // if (record.payType === 1) {
-    //   if (!record.codeUrl) {
-    //     message.error("订单获取失败")
-    //     return
-    //   }
-    //   // 判断是否为手机设备
-    //   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    //   if (isMobile) {
-    //     window.location.href = record.codeUrl
-    //   } else {
-    //     message.loading("正在前往收银台,请稍后.....", 0.6)
-    //     setTimeout(() => {
-    //       history.push(`/order/pay/${record.productId}?codeUrl=${record?.codeUrl?.trim()}&payType=${record?.payType?.trim()}`)
-    //     }, 800)
-    //   }
-    // } else {
-    message.loading('正在前往收银台,请稍后....');
-    setTimeout(() => {
-      if (!record.formData) {
-        message.error('订单获取失败');
-        return;
-      }
-      document.write(record.formData);
-    }, 2000);
-    // }
-  };
-  const deleteConfirm = async () => {
-    await handleDelete(currentRow as API.OrderVO);
-  };
-  const closedConfirm = async () => {
-    await handleClosed(currentRow as API.OrderVO);
-  };
-
   return (
     <PageContainer>
       <div className={styles.standardList}>
         <Card
           className={styles.listCard}
           bordered={false}
-          title="学生列表"
+          title="我的订单"
           style={{ marginTop: 24 }}
           bodyStyle={{ padding: '0 32px 40px 32px' }}
           extra={extraContent}
@@ -177,58 +89,9 @@ export default () => {
             renderItem={(record) => (
               <List.Item
                 actions={[
-                  <Link to={`/order/info/${record.orderNumber}`}>
+                  <Link to={`/order/info/${record.id}`}>
                     <a key="SUCCESS">查看</a>
                   </Link>,
-                  record?.status !== 0 && (
-                    <Popconfirm
-                      key={'Delete'}
-                      title="请确认是否删除该订单!"
-                      onConfirm={deleteConfirm}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <a
-                        key="SUCCESS"
-                        style={{ color: 'red' }}
-                        onClick={async () => {
-                          setCurrentRow(record);
-                        }}
-                      >
-                        删除
-                      </a>
-                    </Popconfirm>
-                  ),
-                  record.status === 0 && (
-                    <>
-                      <a
-                        key="Pay"
-                        onClick={() => {
-                          toPay(record);
-                        }}
-                      >
-                        付款
-                      </a>
-                      <Divider type="vertical" />
-                      <Popconfirm
-                        key={'Closed'}
-                        title="请确认是否取消该订单!"
-                        onConfirm={closedConfirm}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <a
-                          key="Closed"
-                          style={{ color: 'rgba(150,151,153,0.76)' }}
-                          onClick={async () => {
-                            setCurrentRow(record);
-                          }}
-                        >
-                          取消
-                        </a>
-                      </Popconfirm>
-                    </>
-                  ),
                 ]}
               >
                 <List.Item.Meta

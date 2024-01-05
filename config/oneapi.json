@@ -1,593 +1,2232 @@
 {
-  "openapi": "3.0.1",
+  "swagger": "2.0",
   "info": {
-    "title": "Ant Design Pro",
-    "version": "1.0.0"
+    "description": "sql实验",
+    "version": "1.0",
+    "title": "接口文档"
   },
-  "servers": [
+  "host": "localhost:8081",
+  "tags": [
     {
-      "url": "http://localhost:8000/"
+      "name": "address-controller",
+      "description": "Address Controller"
     },
     {
-      "url": "https://localhost:8000/"
+      "name": "businesses-controller",
+      "description": "Businesses Controller"
+    },
+    {
+      "name": "customers-controller",
+      "description": "Customers Controller"
+    },
+    {
+      "name": "foods-controller",
+      "description": "Foods Controller"
+    },
+    {
+      "name": "orders-controller",
+      "description": "Orders Controller"
+    },
+    {
+      "name": "riders-controller",
+      "description": "Riders Controller"
     }
   ],
   "paths": {
-    "/api/currentUser": {
-      "get": {
-        "tags": ["api"],
-        "description": "获取当前的用户",
-        "operationId": "currentUser",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrentUser"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "x-swagger-router-controller": "api"
-    },
-    "/api/login/captcha": {
+    "/api/address/add": {
       "post": {
-        "description": "发送验证码",
-        "operationId": "getFakeCaptcha",
-        "tags": ["login"],
+        "tags": [
+          "address-controller"
+        ],
+        "summary": "addAddress",
+        "operationId": "addAddressUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
         "parameters": [
           {
-            "name": "phone",
-            "in": "query",
-            "description": "手机号",
+            "in": "body",
+            "name": "addressAddRequest",
+            "description": "addressAddRequest",
+            "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/AddressAddRequest",
+              "originalRef": "AddressAddRequest"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FakeCaptcha"
-                }
-              }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«long»",
+              "originalRef": "BaseResponse«long»"
             }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
     },
-    "/api/login/outLogin": {
-      "post": {
-        "description": "登录接口",
-        "operationId": "outLogin",
-        "tags": ["login"],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "x-swagger-router-controller": "api"
-    },
-    "/api/login/account": {
-      "post": {
-        "tags": ["login"],
-        "description": "登录接口",
-        "operationId": "login",
-        "requestBody": {
-          "description": "登录系统",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginParams"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResult"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "x-codegen-request-body-name": "body"
-      },
-      "x-swagger-router-controller": "api"
-    },
-    "/api/notices": {
-      "summary": "getNotices",
-      "description": "NoticeIconItem",
+    "/api/address/get": {
       "get": {
-        "tags": ["api"],
-        "operationId": "getNotices",
+        "tags": [
+          "address-controller"
+        ],
+        "summary": "getAddressById",
+        "operationId": "getAddressByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoticeIconList"
-                }
-              }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«Address»",
+              "originalRef": "BaseResponse«Address»"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
     },
-    "/api/rule": {
+    "/api/address/list": {
       "get": {
-        "tags": ["rule"],
-        "description": "获取规则列表",
-        "operationId": "rule",
+        "tags": [
+          "address-controller"
+        ],
+        "summary": "listAddress",
+        "operationId": "listAddressUsingGET",
+        "produces": [
+          "*/*"
+        ],
         "parameters": [
           {
             "name": "current",
             "in": "query",
-            "description": "当前的页码",
-            "schema": {
-              "type": "number"
-            }
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
           },
           {
             "name": "pageSize",
             "in": "query",
-            "description": "页面的容量",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "schema": {
-              "type": "number"
+              "$ref": "#/definitions/BaseResponse«ListAddressVO»",
+              "originalRef": "BaseResponse«ListAddressVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/address/update": {
+      "post": {
+        "tags": [
+          "address-controller"
+        ],
+        "summary": "updateAddress",
+        "operationId": "updateAddressUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "addressUpdateRequest",
+            "description": "addressUpdateRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddressUpdateRequest",
+              "originalRef": "AddressUpdateRequest"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RuleList"
-                }
-              }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
             }
           },
-          "401": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["rule"],
-        "description": "新建规则",
-        "operationId": "addRule",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RuleListItem"
-                }
-              }
-            }
+          "201": {
+            "description": "Created"
           },
           "401": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": ["rule"],
-        "description": "新建规则",
-        "operationId": "updateRule",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RuleListItem"
-                }
-              }
-            }
+            "description": "Unauthorized"
           },
-          "401": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
       "delete": {
-        "tags": ["rule"],
-        "description": "删除规则",
-        "operationId": "removeRule",
+        "tags": [
+          "address-controller"
+        ],
+        "summary": "deleteAddressById",
+        "operationId": "deleteAddressByIdUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
             }
+          },
+          "204": {
+            "description": "No Content"
           },
           "401": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "x-swagger-router-controller": "api"
-    },
-    "/swagger": {
-      "x-swagger-pipe": "swagger_raw"
-    }
-  },
-  "components": {
-    "schemas": {
-      "CurrentUser": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
+            "description": "Unauthorized"
           },
-          "avatar": {
-            "type": "string"
-          },
-          "userid": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "signature": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "group": {
-            "type": "string"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "type": "string"
-                },
-                "label": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "notifyCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "unreadCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "country": {
-            "type": "string"
-          },
-          "access": {
-            "type": "string"
-          },
-          "geographic": {
-            "type": "object",
-            "properties": {
-              "province": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "key": {
-                    "type": "string"
-                  }
-                }
-              },
-              "city": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "key": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "address": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          }
-        }
-      },
-      "LoginResult": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "currentAuthority": {
-            "type": "string"
-          }
-        }
-      },
-      "PageParams": {
-        "type": "object",
-        "properties": {
-          "current": {
-            "type": "number"
-          },
-          "pageSize": {
-            "type": "number"
-          }
-        }
-      },
-      "RuleListItem": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "disabled": {
-            "type": "boolean"
-          },
-          "href": {
-            "type": "string"
-          },
-          "avatar": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "owner": {
-            "type": "string"
-          },
-          "desc": {
-            "type": "string"
-          },
-          "callNo": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "datetime"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "datetime"
-          },
-          "progress": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "RuleList": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RuleListItem"
-            }
-          },
-          "total": {
-            "type": "integer",
-            "description": "列表的内容总数",
-            "format": "int32"
-          },
-          "success": {
-            "type": "boolean"
-          }
-        }
-      },
-      "FakeCaptcha": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "status": {
-            "type": "string"
-          }
-        }
-      },
-      "LoginParams": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "autoLogin": {
-            "type": "boolean"
-          },
-          "type": {
-            "type": "string"
-          }
-        }
-      },
-      "ErrorResponse": {
-        "required": ["errorCode"],
-        "type": "object",
-        "properties": {
-          "errorCode": {
-            "type": "string",
-            "description": "业务约定的错误码"
-          },
-          "errorMessage": {
-            "type": "string",
-            "description": "业务上的错误信息"
-          },
-          "success": {
-            "type": "boolean",
-            "description": "业务上的请求是否成功"
-          }
-        }
-      },
-      "NoticeIconList": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NoticeIconItem"
-            }
-          },
-          "total": {
-            "type": "integer",
-            "description": "列表的内容总数",
-            "format": "int32"
-          },
-          "success": {
-            "type": "boolean"
-          }
-        }
-      },
-      "NoticeIconItemType": {
-        "title": "NoticeIconItemType",
-        "description": "已读未读列表的枚举",
-        "type": "string",
-        "properties": {},
-        "enum": ["notification", "message", "event"]
-      },
-      "NoticeIconItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "extra": {
-            "type": "string",
-            "format": "any"
-          },
-          "key": { "type": "string" },
-          "read": {
-            "type": "boolean"
-          },
-          "avatar": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "datetime": {
-            "type": "string",
-            "format": "date"
-          },
-          "description": {
-            "type": "string"
-          },
-          "type": {
-            "extensions": {
-              "x-is-enum": true
-            },
-            "$ref": "#/components/schemas/NoticeIconItemType"
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
+    },
+    "/api/business/get": {
+      "get": {
+        "tags": [
+          "businesses-controller"
+        ],
+        "summary": "getBizById",
+        "operationId": "getBizByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«BusinessVO»",
+              "originalRef": "BaseResponse«BusinessVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/business/get/login": {
+      "get": {
+        "tags": [
+          "businesses-controller"
+        ],
+        "summary": "getLoginUser",
+        "operationId": "getLoginUserUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«BusinessVO»",
+              "originalRef": "BaseResponse«BusinessVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/business/list": {
+      "get": {
+        "tags": [
+          "businesses-controller"
+        ],
+        "summary": "listBiz",
+        "operationId": "listBizUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«ListBusinessesVO»",
+              "originalRef": "BaseResponse«ListBusinessesVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/business/listBusinessFoodOrder": {
+      "get": {
+        "tags": [
+          "businesses-controller"
+        ],
+        "summary": "listBusinessFoodOrder",
+        "operationId": "listBusinessFoodOrderUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«List«BusinessFoodOrderDTO»»",
+              "originalRef": "BaseResponse«List«BusinessFoodOrderDTO»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/business/listMy": {
+      "get": {
+        "tags": [
+          "businesses-controller"
+        ],
+        "summary": "listBizMyOrder",
+        "operationId": "listBizMyOrderUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "businessId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«ListOrdersVO»",
+              "originalRef": "BaseResponse«ListOrdersVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/business/login": {
+      "post": {
+        "tags": [
+          "businesses-controller"
+        ],
+        "summary": "login",
+        "operationId": "loginUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "businessLoginRequest",
+            "description": "businessLoginRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BusinessLoginRequest",
+              "originalRef": "BusinessLoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/customer/get": {
+      "get": {
+        "tags": [
+          "customers-controller"
+        ],
+        "summary": "getCusById",
+        "operationId": "getCusByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«CustomerVO»",
+              "originalRef": "BaseResponse«CustomerVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/customer/get/login": {
+      "get": {
+        "tags": [
+          "customers-controller"
+        ],
+        "summary": "getLoginUser",
+        "operationId": "getLoginUserUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«CustomerVO»",
+              "originalRef": "BaseResponse«CustomerVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/customer/listMy": {
+      "get": {
+        "tags": [
+          "customers-controller"
+        ],
+        "summary": "listCusMyOrder",
+        "operationId": "listCusMyOrderUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«ListOrdersVO»",
+              "originalRef": "BaseResponse«ListOrdersVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/customer/login": {
+      "post": {
+        "tags": [
+          "customers-controller"
+        ],
+        "summary": "login",
+        "operationId": "loginUsingPOST_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "customerLoginRequest",
+            "description": "customerLoginRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomerLoginRequest",
+              "originalRef": "CustomerLoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/food/add": {
+      "post": {
+        "tags": [
+          "foods-controller"
+        ],
+        "summary": "addFoods",
+        "operationId": "addFoodsUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "foodAddRequest",
+            "description": "foodAddRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FoodAddRequest",
+              "originalRef": "FoodAddRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/food/get": {
+      "get": {
+        "tags": [
+          "foods-controller"
+        ],
+        "summary": "getFoodsById",
+        "operationId": "getFoodsByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«Foods»",
+              "originalRef": "BaseResponse«Foods»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/food/list": {
+      "get": {
+        "tags": [
+          "foods-controller"
+        ],
+        "summary": "listFoods",
+        "operationId": "listFoodsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "businessId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«ListFoodsVO»",
+              "originalRef": "BaseResponse«ListFoodsVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/food/listFoodOrder": {
+      "get": {
+        "tags": [
+          "foods-controller"
+        ],
+        "summary": "listFoodOrder",
+        "operationId": "listFoodOrderUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«List«FoodOrderSummaryDTO»»",
+              "originalRef": "BaseResponse«List«FoodOrderSummaryDTO»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/food/update": {
+      "post": {
+        "tags": [
+          "foods-controller"
+        ],
+        "summary": "updateFoods",
+        "operationId": "updateFoodsUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "foodsUpdateRequest",
+            "description": "foodsUpdateRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FoodsUpdateRequest",
+              "originalRef": "FoodsUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/order/create": {
+      "post": {
+        "tags": [
+          "orders-controller"
+        ],
+        "summary": "createOrder",
+        "operationId": "createOrderUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "orderCreateRequest",
+            "description": "orderCreateRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrderCreateRequest",
+              "originalRef": "OrderCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/order/get": {
+      "get": {
+        "tags": [
+          "orders-controller"
+        ],
+        "summary": "getOrderById",
+        "operationId": "getOrderByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«OrdersVO»",
+              "originalRef": "BaseResponse«OrdersVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/order/list": {
+      "get": {
+        "tags": [
+          "orders-controller"
+        ],
+        "summary": "listOrder",
+        "operationId": "listOrderUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«ListOrdersVO»",
+              "originalRef": "BaseResponse«ListOrdersVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/order/listNoRider": {
+      "get": {
+        "tags": [
+          "orders-controller"
+        ],
+        "summary": "listNoRiderOrder",
+        "operationId": "listNoRiderOrderUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«ListOrdersVO»",
+              "originalRef": "BaseResponse«ListOrdersVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/order/listOrderSummary": {
+      "get": {
+        "tags": [
+          "orders-controller"
+        ],
+        "summary": "listOrderSummary",
+        "operationId": "listOrderSummaryUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«List«OrderSummaryDTO»»",
+              "originalRef": "BaseResponse«List«OrderSummaryDTO»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/order/update": {
+      "post": {
+        "tags": [
+          "orders-controller"
+        ],
+        "summary": "updateOrder",
+        "operationId": "updateOrderUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "ordersUpdateRequest",
+            "description": "ordersUpdateRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrdersUpdateRequest",
+              "originalRef": "OrdersUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/rider/get": {
+      "get": {
+        "tags": [
+          "riders-controller"
+        ],
+        "summary": "getRiderById",
+        "operationId": "getRiderByIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«RiderVO»",
+              "originalRef": "BaseResponse«RiderVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/rider/get/login": {
+      "get": {
+        "tags": [
+          "riders-controller"
+        ],
+        "summary": "getLoginUser",
+        "operationId": "getLoginUserUsingGET_2",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«RiderVO»",
+              "originalRef": "BaseResponse«RiderVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/rider/listMy": {
+      "get": {
+        "tags": [
+          "riders-controller"
+        ],
+        "summary": "listRiderMyOrder",
+        "operationId": "listRiderMyOrderUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "riderId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«ListOrdersVO»",
+              "originalRef": "BaseResponse«ListOrdersVO»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/rider/login": {
+      "post": {
+        "tags": [
+          "riders-controller"
+        ],
+        "summary": "login",
+        "operationId": "loginUsingPOST_2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "riderLoginRequest",
+            "description": "riderLoginRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RiderLoginRequest",
+              "originalRef": "RiderLoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BaseResponse«int»",
+              "originalRef": "BaseResponse«int»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Address": {
+      "type": "object",
+      "properties": {
+        "consignee": {
+          "type": "string"
+        },
+        "createTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customerId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "updateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Address"
+    },
+    "AddressAddRequest": {
+      "type": "object",
+      "properties": {
+        "consignee": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "AddressAddRequest"
+    },
+    "AddressUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "consignee": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "AddressUpdateRequest"
+    },
+    "AddressVO": {
+      "type": "object",
+      "properties": {
+        "consignee": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "AddressVO"
+    },
+    "BaseResponse«Address»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/Address",
+          "originalRef": "Address"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«Address»"
+    },
+    "BaseResponse«BusinessVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/BusinessVO",
+          "originalRef": "BusinessVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«BusinessVO»"
+    },
+    "BaseResponse«CustomerVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/CustomerVO",
+          "originalRef": "CustomerVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«CustomerVO»"
+    },
+    "BaseResponse«Foods»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/Foods",
+          "originalRef": "Foods"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«Foods»"
+    },
+    "BaseResponse«ListAddressVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/ListAddressVO",
+          "originalRef": "ListAddressVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«ListAddressVO»"
+    },
+    "BaseResponse«ListBusinessesVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/ListBusinessesVO",
+          "originalRef": "ListBusinessesVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«ListBusinessesVO»"
+    },
+    "BaseResponse«ListFoodsVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/ListFoodsVO",
+          "originalRef": "ListFoodsVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«ListFoodsVO»"
+    },
+    "BaseResponse«ListOrdersVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/ListOrdersVO",
+          "originalRef": "ListOrdersVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«ListOrdersVO»"
+    },
+    "BaseResponse«List«BusinessFoodOrderDTO»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BusinessFoodOrderDTO",
+            "originalRef": "BusinessFoodOrderDTO"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«List«BusinessFoodOrderDTO»»"
+    },
+    "BaseResponse«List«FoodOrderSummaryDTO»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FoodOrderSummaryDTO",
+            "originalRef": "FoodOrderSummaryDTO"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«List«FoodOrderSummaryDTO»»"
+    },
+    "BaseResponse«List«OrderSummaryDTO»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderSummaryDTO",
+            "originalRef": "OrderSummaryDTO"
+          }
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«List«OrderSummaryDTO»»"
+    },
+    "BaseResponse«OrdersVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/OrdersVO",
+          "originalRef": "OrdersVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«OrdersVO»"
+    },
+    "BaseResponse«RiderVO»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/RiderVO",
+          "originalRef": "RiderVO"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«RiderVO»"
+    },
+    "BaseResponse«int»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«int»"
+    },
+    "BaseResponse«long»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "BaseResponse«long»"
+    },
+    "BusinessFoodOrderDTO": {
+      "type": "object",
+      "properties": {
+        "businessId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "businessName": {
+          "type": "string"
+        },
+        "foodName": {
+          "type": "string"
+        },
+        "totalOrders": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "BusinessFoodOrderDTO"
+    },
+    "BusinessLoginRequest": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "title": "BusinessLoginRequest"
+    },
+    "BusinessVO": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        }
+      },
+      "title": "BusinessVO"
+    },
+    "CustomerLoginRequest": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "title": "CustomerLoginRequest"
+    },
+    "CustomerVO": {
+      "type": "object",
+      "properties": {
+        "avatar": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "title": "CustomerVO"
+    },
+    "FoodAddRequest": {
+      "type": "object",
+      "properties": {
+        "businessId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "title": "FoodAddRequest"
+    },
+    "FoodOrderSummaryDTO": {
+      "type": "object",
+      "properties": {
+        "foodName": {
+          "type": "string"
+        },
+        "totalOrders": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "FoodOrderSummaryDTO"
+    },
+    "Foods": {
+      "type": "object",
+      "properties": {
+        "businessId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "updateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Foods"
+    },
+    "FoodsUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "businessId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "title": "FoodsUpdateRequest"
+    },
+    "FoodsVO": {
+      "type": "object",
+      "properties": {
+        "businessId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "category": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "title": "FoodsVO"
+    },
+    "ListAddressVO": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address",
+            "originalRef": "Address"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ListAddressVO"
+    },
+    "ListBusinessesVO": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BusinessVO",
+            "originalRef": "BusinessVO"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ListBusinessesVO"
+    },
+    "ListFoodsVO": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Foods",
+            "originalRef": "Foods"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ListFoodsVO"
+    },
+    "ListOrdersVO": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrdersVO",
+            "originalRef": "OrdersVO"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ListOrdersVO"
+    },
+    "OrderCreateRequest": {
+      "type": "object",
+      "properties": {
+        "addressId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "businessId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "customerId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "foodId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "riderId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "OrderCreateRequest"
+    },
+    "OrderSummaryDTO": {
+      "type": "object",
+      "properties": {
+        "businessName": {
+          "type": "string"
+        },
+        "foodName": {
+          "type": "string"
+        },
+        "totalOrders": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "OrderSummaryDTO"
+    },
+    "OrdersUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "riderId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "OrdersUpdateRequest"
+    },
+    "OrdersVO": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/AddressVO",
+          "originalRef": "AddressVO"
+        },
+        "business": {
+          "$ref": "#/definitions/BusinessVO",
+          "originalRef": "BusinessVO"
+        },
+        "customer": {
+          "$ref": "#/definitions/CustomerVO",
+          "originalRef": "CustomerVO"
+        },
+        "food": {
+          "$ref": "#/definitions/FoodsVO",
+          "originalRef": "FoodsVO"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "rider": {
+          "$ref": "#/definitions/RiderVO",
+          "originalRef": "RiderVO"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "OrdersVO"
+    },
+    "RiderLoginRequest": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "title": "RiderLoginRequest"
+    },
+    "RiderVO": {
+      "type": "object",
+      "properties": {
+        "avatar": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "title": "RiderVO"
     }
   }
 }
